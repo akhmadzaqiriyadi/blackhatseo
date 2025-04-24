@@ -1,0 +1,7 @@
+{
+    "use_selenium": false,
+    "use_bert": false,
+    "verbose": true,
+    "timeout": 10,
+    "max_retries": 3
+}

@@ -1,0 +1,19 @@
+# Virtual environment
+venv/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Log files
+*.log
+
+# Output files
+predictions.json
+
+# Training datasets (optional, uncomment if you want to exclude)
+# train_data*.csv
+
+# VS Code settings
+.vscode/
+launch.json
