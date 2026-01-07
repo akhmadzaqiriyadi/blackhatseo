@@ -125,8 +125,9 @@ def health():
 
 # Run the app
 if __name__ == '__main__':
+    import os
     host = config.get('host', '0.0.0.0')
-    port = config.get('port', 5001)
+    port = int(os.environ.get('PORT', config.get('port', 5001)))
     debug = config.get('debug', False)
     logger.info(f"Starting Flask API on {host}:{port}")
     app.run(host=host, port=port, debug=debug)
