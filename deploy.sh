@@ -3,10 +3,10 @@
 # ==========================================
 # 🔧 KONFIGURASI SERVER & PROYEK
 # ==========================================
-SERVER="YOUR_VPS_IP"           # Ganti dengan IP VPS kamu
-USER="YOUR_USER"               # Ganti dengan username VPS
-KEY_PATH="$HOME/.ssh/id_rsa"   # Path ke SSH key
-PROJECT_DIR="/home/$USER/blackhatseo"
+SERVER="10.10.10.201"
+USER="uch"
+KEY_PATH="$HOME/uch"
+PROJECT_DIR="/home/uch/blackhatseo"
 APP_NAME="blackhatseo-api"
 PORT=5001
 
@@ -27,25 +27,26 @@ fi
 
 echo -e "${GREEN}✅ Koneksi ke server berhasil${NC}"
 
-ssh -i "$KEY_PATH" "$USER@$SERVER" << 'EOF'
+ssh -i "$KEY_PATH" "$USER@$SERVER" << EOF
     set -e
     
-    echo "📂 Setup direktori project..."
-    PROJECT_DIR="/home/$USER/blackhatseo"
+    PROJECT_DIR="/home/uch/blackhatseo"
     APP_NAME="blackhatseo-api"
     PORT=5001
     
+    echo "📂 Setup direktori project..."
+    
     # Clone atau pull repo
-    if [ ! -d "$PROJECT_DIR" ]; then
+    if [ ! -d "\$PROJECT_DIR" ]; then
         echo "📥 Cloning repository..."
-        git clone https://github.com/akhmadzaqiriyadi/blackhatseo.git "$PROJECT_DIR"
+        git clone https://github.com/akhmadzaqiriyadi/blackhatseo.git "\$PROJECT_DIR"
     else
         echo "⬇️  Pull update..."
-        cd "$PROJECT_DIR"
+        cd "\$PROJECT_DIR"
         git pull origin main
     fi
     
-    cd "$PROJECT_DIR"
+    cd "\$PROJECT_DIR"
     
     # Setup Python virtual environment
     echo "🐍 Setup Python virtual environment..."
@@ -61,6 +62,7 @@ ssh -i "$KEY_PATH" "$USER@$SERVER" << 'EOF'
     
     # Train model jika belum ada
     echo "🤖 Cek model..."
+    mkdir -p models
     if [ ! -f "models/model.pkl" ] || [ ! -f "models/vectorizer.pkl" ]; then
         echo "🏋️ Training model..."
         python3 -m src.main train --train-urls data/train_data_balanced_corrected.csv \
@@ -75,16 +77,16 @@ ssh -i "$KEY_PATH" "$USER@$SERVER" << 'EOF'
     cat > ecosystem.config.cjs <<INNER_EOF
 module.exports = {
   apps: [{
-    name: '$APP_NAME',
-    script: 'venv/bin/python',
+    name: '\$APP_NAME',
+    script: '\$PROJECT_DIR/venv/bin/python',
     args: 'app.py',
-    cwd: '$PROJECT_DIR',
+    cwd: '\$PROJECT_DIR',
     instances: 1,
     exec_mode: 'fork',
     env: {
       NODE_ENV: 'production',
       FLASK_ENV: 'production',
-      PORT: $PORT
+      PORT: \$PORT
     },
     merge_logs: true,
     autorestart: true,
@@ -96,7 +98,7 @@ INNER_EOF
 
     # Restart PM2
     echo "🔄 Restart PM2..."
-    pm2 delete $APP_NAME 2>/dev/null || true
+    pm2 delete \$APP_NAME 2>/dev/null || true
     pm2 start ecosystem.config.cjs
     pm2 save
     
@@ -107,8 +109,8 @@ INNER_EOF
     
     echo ""
     echo "✅ Deploy selesai!"
-    echo "🌐 API berjalan di: http://$(hostname -I | awk '{print $1}'):$PORT"
-    echo "📌 Health check: curl http://localhost:$PORT/api/health"
+    echo "🌐 API berjalan di: http://10.10.10.201:\$PORT"
+    echo "📌 Health check: curl http://localhost:\$PORT/api/health"
 EOF
 
 echo -e "${GREEN}✅ Deploy ke VPS selesai!${NC}"

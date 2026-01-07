@@ -1,0 +1,26 @@
+# Requirements untuk Production (tanpa PyTorch/BERT - lebih ringan)
+# Untuk training tetap pakai requirements.txt yang lengkap
+
+# Web Framework
+flask==3.1.0
+flask-cors==5.0.1
+
+# Web Scraping
+beautifulsoup4==4.13.4
+requests==2.32.3
+selenium==4.31.0
+webdriver-manager==4.0.2
+
+# Machine Learning (inference only - no torch)
+scikit-learn==1.6.1
+pandas==2.2.3
+numpy==2.2.5
+scipy==1.15.2
+imbalanced-learn==0.13.0
+
+# NLP
+nltk==3.9.1
+
+# Utilities
+tqdm==4.67.1
+python-dotenv==1.1.0

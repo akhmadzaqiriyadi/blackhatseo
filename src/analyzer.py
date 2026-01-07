@@ -1,9 +1,15 @@
 import pickle
 import logging
 import numpy as np
-import torch
 from sklearn.feature_extraction.text import TfidfVectorizer
 from .utils import Utils
+
+# Optional torch import (not needed for inference without BERT)
+try:
+    import torch
+    TORCH_AVAILABLE = True
+except ImportError:
+    TORCH_AVAILABLE = False
 
 logger = logging.getLogger(__name__)
 
@@ -22,21 +28,27 @@ except ImportError:
     NLTK_AVAILABLE = False
     logger.warning("NLTK not available. Text preprocessing limited.")
 
-try:
-    from transformers import AutoModel, AutoTokenizer
-    BERT_MODEL_NAME = "indolem/indobert-base-uncased"
-    BERT_TOKENIZER = AutoTokenizer.from_pretrained(BERT_MODEL_NAME)
-    BERT_MODEL = AutoModel.from_pretrained(BERT_MODEL_NAME)
-    BERT_AVAILABLE = True
-except:
+# Optional BERT imports (only if torch is available)
+BERT_AVAILABLE = False
+BERT_MODEL = None
+BERT_TOKENIZER = None
+if TORCH_AVAILABLE:
     try:
-        BERT_MODEL_NAME = "bert-base-multilingual-uncased"
+        from transformers import AutoModel, AutoTokenizer
+        BERT_MODEL_NAME = "indolem/indobert-base-uncased"
         BERT_TOKENIZER = AutoTokenizer.from_pretrained(BERT_MODEL_NAME)
         BERT_MODEL = AutoModel.from_pretrained(BERT_MODEL_NAME)
         BERT_AVAILABLE = True
     except:
-        BERT_AVAILABLE = False
-        logger.warning("Transformers not available. BERT embeddings disabled.")
+        try:
+            BERT_MODEL_NAME = "bert-base-multilingual-uncased"
+            BERT_TOKENIZER = AutoTokenizer.from_pretrained(BERT_MODEL_NAME)
+            BERT_MODEL = AutoModel.from_pretrained(BERT_MODEL_NAME)
+            BERT_AVAILABLE = True
+        except:
+            logger.warning("Transformers not available. BERT embeddings disabled.")
+else:
+    logger.info("PyTorch not installed. BERT embeddings disabled (TF-IDF only).")
 
 class TextAnalyzer:
     """Text analysis with TF-IDF and optional BERT embeddings."""
