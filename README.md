@@ -1,144 +1,144 @@
 # 🔍 BlackHat SEO Detector
 
-An intelligent machine learning-based tool to detect Black Hat SEO practices on websites, with special focus on Indonesian government (.go.id) and educational (.ac.id) domains that may have been compromised with gambling/spam content injection.
+Alat berbasis Machine Learning untuk mendeteksi praktik Black Hat SEO pada website, dengan fokus khusus pada domain pemerintah Indonesia (.go.id) dan pendidikan (.ac.id) yang mungkin telah dikompromikan dengan injeksi konten judi/spam.
 
-## ✨ Features
+## ✨ Fitur Utama
 
-- **ML-Powered Detection**: Ensemble model combining SVM (text) + Random Forest (features)
-- **Comprehensive Analysis**: Detects keyword stuffing, cloaking, hidden content, suspicious links
-- **Trusted Domain Whitelist**: Reduces false positives for known legitimate sites (Shopee, Kompas, etc.)
-- **Official Domain Override**: Special handling for .go.id and .ac.id domains
-- **REST API**: Flask-based API for integration
-- **CLI Tool**: Command-line interface for batch processing
+- **Deteksi Berbasis ML**: Model ensemble yang menggabungkan SVM (teks) + Random Forest (fitur)
+- **Analisis Komprehensif**: Mendeteksi keyword stuffing, cloaking, hidden content, link mencurigakan
+- **Whitelist Domain Terpercaya**: Mengurangi false positive untuk situs legitim (Shopee, Kompas, dll)
+- **Override Domain Resmi**: Penanganan khusus untuk domain .go.id dan .ac.id
+- **REST API**: API berbasis Flask untuk integrasi
+- **CLI Tool**: Command-line interface untuk batch processing
 
-## 🚀 Quick Start
+## 🚀 Memulai
 
-### Installation
+### Instalasi
 
 ```bash
 # Clone repository
 git clone https://github.com/akhmadzaqiriyadi/blackhatseo.git
 cd blackhatseo
 
-# Create virtual environment
+# Buat virtual environment
 python3 -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+source venv/bin/activate  # Di Windows: venv\Scripts\activate
 
 # Install dependencies
 pip install -r requirements.txt
 ```
 
-### Basic Usage
+### Penggunaan Dasar
 
 #### Command Line
 
 ```bash
-# Predict single/multiple URLs
+# Prediksi single/multiple URL
 python3 -m src.main predict --urls data/test_urls.txt
 
-# Get detailed explanation
+# Dapatkan penjelasan detail
 python3 -m src.main explain --url https://example.com
 
-# Train model with custom data
+# Training model dengan data kustom
 python3 -m src.main train --train-urls data/train_data.csv
 ```
 
 #### REST API
 
 ```bash
-# Start API server
+# Jalankan API server
 python3 app.py
 
 # Health check
 curl http://localhost:5001/api/health
 
-# Predict URLs
+# Prediksi URL
 curl -X POST http://localhost:5001/api/predict \
   -H "Content-Type: application/json" \
   -d '{"urls": ["https://example.com"]}'
 
-# Get explanation
+# Dapatkan penjelasan
 curl -X POST http://localhost:5001/api/explain \
   -H "Content-Type: application/json" \
   -d '{"url": "https://example.com"}'
 ```
 
-## 📊 Example Results
+## 📊 Contoh Hasil Pengujian
 
-### Test Results (Yogyakarta Sites)
+### Hasil Test Situs di Yogyakarta
 
-| URL | Type | Status | Confidence |
+| URL | Tipe | Status | Confidence |
 |-----|------|--------|------------|
-| jogjakota.go.id | Government | ✅ Clean | 5.48% |
-| bantulkab.go.id | Government | ✅ Clean | 5.53% |
-| ugm.ac.id | University | ✅ Clean | 4.08% |
-| uny.ac.id | University | ✅ Clean | 4.96% |
-| uad.ac.id | University | ✅ Clean | 14.64% |
+| jogjakota.go.id | Pemerintah | ✅ Bersih | 5.48% |
+| bantulkab.go.id | Pemerintah | ✅ Bersih | 5.53% |
+| ugm.ac.id | Universitas | ✅ Bersih | 4.08% |
+| uny.ac.id | Universitas | ✅ Bersih | 4.96% |
+| uad.ac.id | Universitas | ✅ Bersih | 14.64% |
 
-### Compromised Sites Detection
+### Deteksi Situs Terkompromisi
 
-| URL | Type | Status | Confidence |
+| URL | Tipe | Status | Confidence |
 |-----|------|--------|------------|
-| bkpsdm.purbalinggakab.go.id | Government | ⚠️ Black Hat | 65% |
-| sinora.umpwr.ac.id | University | ⚠️ Black Hat | 65% |
-| sumbarprov.go.id | Government | ⚠️ Black Hat | 65% |
+| bkpsdm.purbalinggakab.go.id | Pemerintah | ⚠️ Black Hat | 65% |
+| sinora.umpwr.ac.id | Universitas | ⚠️ Black Hat | 65% |
+| sumbarprov.go.id | Pemerintah | ⚠️ Black Hat | 65% |
 
-## 📁 Project Structure
+## 📁 Struktur Project
 
 ```
 blackhatseo/
 ├── src/
-│   ├── main.py          # CLI entry point
-│   ├── app.py           # Flask API (imported by root app.py)
-│   ├── detector.py      # Main detection logic
-│   ├── scraper.py       # Web scraping & analysis
-│   ├── analyzer.py      # Text analysis (TF-IDF, BERT)
+│   ├── main.py          # Entry point CLI
+│   ├── app.py           # Flask API
+│   ├── detector.py      # Logika deteksi utama
+│   ├── scraper.py       # Web scraping & analisis
+│   ├── analyzer.py      # Analisis teks (TF-IDF, BERT)
 │   ├── features.py      # Feature engineering
-│   ├── builder.py       # Dataset building
-│   ├── config.py        # Configuration management
-│   └── utils.py         # Utility functions
+│   ├── builder.py       # Pembuatan dataset
+│   ├── config.py        # Manajemen konfigurasi
+│   └── utils.py         # Fungsi utilitas
 ├── data/
-│   ├── train_data_balanced_corrected.csv  # Training dataset
-│   ├── blackhat_queries.txt               # Gambling keywords
-│   ├── clean_queries.txt                  # Clean site queries
-│   └── test_urls.txt                      # Test URLs
+│   ├── train_data_balanced_corrected.csv  # Dataset training
+│   ├── blackhat_queries.txt               # Kata kunci judi
+│   ├── clean_queries.txt                  # Query situs bersih
+│   └── test_urls.txt                      # URL untuk testing
 ├── models/
-│   ├── model.pkl        # Trained model
+│   ├── model.pkl        # Model terlatih
 │   └── vectorizer.pkl   # TF-IDF vectorizer
-├── logs/                # Application logs
-├── config/              # Configuration files
-├── app.py               # API entry point
-├── startup.sh           # Startup script
+├── logs/                # Log aplikasi
+├── config/              # File konfigurasi
+├── app.py               # Entry point API
+├── startup.sh           # Script startup
 └── requirements.txt     # Dependencies
 ```
 
-## 🎯 Detection Features
+## 🎯 Fitur Deteksi
 
-The model analyzes:
+Model menganalisis:
 
-1. **Keyword Analysis**
-   - Gambling keywords (judi, slot, togel, casino, etc.)
-   - Spam keywords (viagra, obat kuat, crypto investment, etc.)
+1. **Analisis Kata Kunci**
+   - Kata kunci judi (judi, slot, togel, casino, dll)
+   - Kata kunci spam (viagra, obat kuat, crypto investment, dll)
 
-2. **Meta Tag Analysis**
+2. **Analisis Meta Tag**
    - Title, description, keywords meta tags
-   - Open Graph and Twitter cards
+   - Open Graph dan Twitter cards
 
-3. **Content Analysis**
-   - Keyword stuffing detection (>3% density)
+3. **Analisis Konten**
+   - Deteksi keyword stuffing (>3% density)
    - Hidden content (display:none, font-size:0)
-   - Thin content detection (<300 words)
+   - Deteksi thin content (<300 kata)
 
-4. **Link Analysis**
-   - Suspicious external links
-   - Links to known gambling domains
+4. **Analisis Link**
+   - Link eksternal mencurigakan
+   - Link ke domain judi yang dikenal
 
-5. **Technical Analysis**
-   - Cloaking detection (different content for bots vs users)
-   - Suspicious redirects
-   - Malicious JavaScript patterns
+5. **Analisis Teknis**
+   - Deteksi cloaking (konten berbeda untuk bot vs user)
+   - Redirect mencurigakan
+   - Pola JavaScript berbahaya
 
-## ⚙️ Configuration
+## ⚙️ Konfigurasi
 
 Edit `config/config.json`:
 
@@ -154,13 +154,13 @@ Edit `config/config.json`:
 
 ## 🔧 API Endpoints
 
-| Endpoint | Method | Description |
-|----------|--------|-------------|
+| Endpoint | Method | Deskripsi |
+|----------|--------|-----------|
 | `/api/health` | GET | Health check |
-| `/api/predict` | POST | Predict URLs |
-| `/api/explain` | POST | Detailed explanation |
+| `/api/predict` | POST | Prediksi URL |
+| `/api/explain` | POST | Penjelasan detail |
 
-### Request/Response Examples
+### Contoh Request/Response
 
 **POST /api/predict**
 ```json
@@ -182,30 +182,30 @@ Edit `config/config.json`:
 }
 ```
 
-## 📈 Model Performance
+## 📈 Performa Model
 
-- **Training Data**: 1,607 labeled URLs
-- **Ensemble Accuracy**: ~83%
-- **Features**: TF-IDF text + 14 engineered features
+- **Data Training**: 1,607 URL berlabel
+- **Akurasi Ensemble**: ~83%
+- **Fitur**: TF-IDF teks + 14 engineered features
 
-## 🤝 Contributing
+## 🤝 Kontribusi
 
-1. Fork the repository
-2. Create feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit changes (`git commit -m 'Add amazing feature'`)
-4. Push to branch (`git push origin feature/amazing-feature`)
-5. Open Pull Request
+1. Fork repository
+2. Buat feature branch (`git checkout -b feature/fitur-baru`)
+3. Commit perubahan (`git commit -m 'Tambah fitur baru'`)
+4. Push ke branch (`git push origin feature/fitur-baru`)
+5. Buka Pull Request
 
-## 📝 License
+## 📝 Lisensi
 
-MIT License - see LICENSE file for details.
+MIT License - lihat file LICENSE untuk detail.
 
-## 👤 Author
+## 👤 Penulis
 
 **Akhmad Zaqi Riyadi**
 - GitHub: [@akhmadzaqiriyadi](https://github.com/akhmadzaqiriyadi)
 
-## 🙏 Acknowledgments
+## 🙏 Terima Kasih
 
-- Indonesian government and educational institutions for test data
-- scikit-learn, Flask, BeautifulSoup communities
+- Institusi pemerintah dan pendidikan Indonesia untuk data pengujian
+- Komunitas scikit-learn, Flask, BeautifulSoup
