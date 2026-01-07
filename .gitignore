@@ -1,19 +1,51 @@
-# Virtual environment
-venv/
-
-# Python cache
 __pycache__/
-*.pyc
+*.py[cod]
+*$py.class
 
-# Log files
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual environments
+venv/
+nama_venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# Logs
+logs/
 *.log
 
-# Output files
-predictions.json
+# Models (large files, regenerate with training)
+models/*.pkl
 
-# Training datasets (optional, uncomment if you want to exclude)
-# train_data*.csv
-
-# VS Code settings
+# IDE
 .vscode/
+.idea/
+.DS_Store
 launch.json
+
+# Temporary files
+*.tmp
+*.temp

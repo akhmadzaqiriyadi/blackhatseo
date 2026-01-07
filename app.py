@@ -4,40 +4,33 @@ import json
 import logging
 import os
 from flask import Flask, request, jsonify
-from blackhat_seo_detector import BlackHatSEODetector, load_config
+from src.detector import BlackHatSEODetector
+from src.config import load_config, setup_logging, MODELS_DIR
 
-# Configure logging
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - %(message)s',
-    handlers=[
-        logging.StreamHandler(),
-        logging.FileHandler('api.log')
-    ]
-)
-logger = logging.getLogger(__name__)
+# Configure logging using shared config
+logger = setup_logging('api.log', verbose=False)
 
 # Initialize Flask app
 app = Flask(__name__)
 
 # Load configuration
-config_path = 'config.json'
-config = load_config(config_path)
+config = load_config()
 if config.get('verbose', False):
     logger.setLevel(logging.DEBUG)
 
 # Initialize detector
 try:
     detector = BlackHatSEODetector(
-        model_path='model.pkl',
-        vectorizer_path='vectorizer.pkl',
+        model_path=MODELS_DIR / 'model.pkl',
+        vectorizer_path=MODELS_DIR / 'vectorizer.pkl',
         use_selenium=config.get('use_selenium', False),
         use_bert=config.get('use_bert', False)
     )
     logger.info("BlackHatSEODetector initialized successfully.")
 except Exception as e:
     logger.error(f"Failed to initialize detector: {e}")
-    raise
+    # Don't raise here, allow app to start even if model loading fails (maybe for health checks)
+    detector = None
 
 # API Endpoints
 
@@ -48,6 +41,9 @@ def predict():
     Expects JSON: {"urls": ["url1", "url2", ...]}
     Returns JSON with predictions.
     """
+    if detector is None:
+         return jsonify({'error': 'Detector not initialized correctly.'}), 500
+
     try:
         data = request.get_json()
         if not data or 'urls' not in data:
@@ -83,9 +79,12 @@ def predict():
 def explain():
     """
     Explain prediction for a single URL.
-    Expects JSON: {"url": "https://example.com"}
+    Expects JSON: {"url": "https://politeknikdarussalam.ac.id"}
     Returns JSON with explanation.
     """
+    if detector is None:
+         return jsonify({'error': 'Detector not initialized correctly.'}), 500
+         
     try:
         data = request.get_json()
         if not data or 'url' not in data:
@@ -120,7 +119,8 @@ def health():
     """
     return jsonify({
         'status': 'healthy',
-        'message': 'API is running'
+        'message': 'API is running',
+        'detector_loaded': detector is not None
     }), 200
 
 # Run the app

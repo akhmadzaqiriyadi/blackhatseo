@@ -1,0 +1,108 @@
+[
+  {
+    "url": "https://www.bbc.com/indonesia",
+    "prediction": 0,
+    "probability": 0.030850749776792814,
+    "metrics": {
+      "judi_keyword_count": 0,
+      "spam_keyword_count": 1,
+      "suspicious_link_count": 0,
+      "keyword_stuffing_detected": false
+    }
+  },
+  {
+    "url": "https://www.kemenkeu.go.id/",
+    "prediction": 0,
+    "probability": 0.3583293707183126,
+    "metrics": {
+      "judi_keyword_count": 0,
+      "spam_keyword_count": 0,
+      "suspicious_link_count": 0,
+      "keyword_stuffing_detected": true
+    }
+  },
+  {
+    "url": "https://www.itb.ac.id/",
+    "prediction": 0,
+    "probability": 0.10014148304988886,
+    "metrics": {
+      "judi_keyword_count": 0,
+      "spam_keyword_count": 1,
+      "suspicious_link_count": 0,
+      "keyword_stuffing_detected": false
+    }
+  },
+  {
+    "url": "https://www.republika.co.id/",
+    "prediction": 0,
+    "probability": 0.05090628644206436,
+    "metrics": {
+      "judi_keyword_count": 3,
+      "spam_keyword_count": 1,
+      "suspicious_link_count": 0,
+      "keyword_stuffing_detected": false
+    }
+  },
+  {
+    "url": "https://id.wikipedia.org/wiki/Ekonomi_Indonesia",
+    "prediction": 0,
+    "probability": 0.15061201174593333,
+    "metrics": {
+      "judi_keyword_count": 1,
+      "spam_keyword_count": 1,
+      "suspicious_link_count": 0,
+      "keyword_stuffing_detected": false
+    }
+  },
+  {
+    "url": "https://www.88slotdewa.com/",
+    "prediction": 1,
+    "probability": 0.6356787320949588,
+    "metrics": {
+      "judi_keyword_count": 7,
+      "spam_keyword_count": 0,
+      "suspicious_link_count": 0,
+      "keyword_stuffing_detected": true
+    }
+  },
+  {
+    "url": "https://www.bolabet.com/",
+    "prediction": 1,
+    "probability": 0.662307779658522,
+    "metrics": {
+      "judi_keyword_count": 8,
+      "spam_keyword_count": 0,
+      "suspicious_link_count": 12,
+      "keyword_stuffing_detected": true
+    }
+  },
+  {
+    "url": "https://togelonline88.net/",
+    "prediction": 1,
+    "probability": 0.7203662967234411,
+    "metrics": {
+      "judi_keyword_count": 1,
+      "spam_keyword_count": 0,
+      "suspicious_link_count": 0,
+      "keyword_stuffing_detected": true
+    }
+  },
+  {
+    "url": "https://situsjudionline.com/",
+    "error": "Failed to process URL",
+    "prediction": null,
+    "probability": null,
+    "metrics": {}
+  },
+  {
+    "url": "https://www.youtube.com/watch?v=abc123",
+    "prediction": 1,
+    "probability": 0.5088866504636576,
+    "metrics": {
+      "judi_keyword_count": 0,
+      "spam_keyword_count": 0,
+      "suspicious_link_count": 0,
+      "keyword_stuffing_detected": true
+    }
+  }
+]
